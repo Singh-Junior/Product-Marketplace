@@ -1,0 +1,60 @@
+.alert-wrapper {
+    position: fixed;
+    z-index: 9999;
+    width: 100%;
+    pointer-events: none;
+  
+    .alert {
+      position: fixed;
+      pointer-events: all;
+      min-width: 250px;
+      margin: 0.5rem;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      animation: fadeInOut 3s ease-in-out forwards;
+  
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+  
+      &.success {
+        background-color: #2ece43;
+        top: 1rem;
+      }
+  
+      &.error {
+        background-color: #ff4d4d;
+        bottom: 1rem;
+        left: 1rem;
+      }
+  
+      &.info {
+        background-color: #548bf3;
+        bottom: 1rem;
+        left: 1rem;
+      }
+  
+      .close {
+        cursor: pointer;
+      }
+    }
+  }
+  
+  @keyframes fadeInOut {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    10%, 90% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+  

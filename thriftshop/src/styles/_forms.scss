@@ -1,0 +1,30 @@
+form {
+    background-color: var(--bg-light);
+    max-width: 420px;
+    margin: auto;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+      transition: var(--transition);
+  
+      &:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(102, 179, 255, 0.2);
+      }
+    }
+  
+    p {
+      color: red;
+      margin-bottom: 1rem;
+    }
+  }
+  

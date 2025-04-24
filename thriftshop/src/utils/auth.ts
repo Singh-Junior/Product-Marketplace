@@ -46,4 +46,18 @@ export const generateToken = (user: User): string => {
     };
     return btoa(JSON.stringify(payload));
   };
+
+
+export const signupUser = (newUser: User) => {
+  const users = getUsers();
+
+  const exists = users.some(
+    (u) => u.email === newUser.email || u.username === newUser.username
+  );
+  if (exists) throw new Error("User already exists");
+
+  users.push(newUser);
+  saveUsers(users);
+};
+
   
