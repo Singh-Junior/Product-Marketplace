@@ -1,9 +1,14 @@
 import { User } from "../types/user";
-import { getUsers, saveUsers, setCurrentUser, generateToken } from "../utils/auth";
+import {
+  getUsers,
+  saveUsers,
+  setCurrentUser,
+  generateToken,
+} from "../utils/auth";
 
 export const signup = (newUser: Omit<User, "id" | "token">): string | null => {
   const users = getUsers();
-  if (users.find(u => u.email === newUser.email)) {
+  if (users.find((u) => u.email === newUser.email)) {
     return "User already exists";
   }
   const id = Date.now();
@@ -22,10 +27,15 @@ export const signup = (newUser: Omit<User, "id" | "token">): string | null => {
 
 export const login = (email: string, password: string): string | null => {
   const users = getUsers();
-  const user = users.find(u => u.email === email && u.password === password);
-  if (!user) return "Invalid credentials";
+  const user = users.find((u) => u.email === email && u.password === password);
 
-  user.token = generateToken(user);
-  setCurrentUser(user);
-  return null;
+  if (!user) {
+    return "Invalid email or password.";
+  }
+
+  const token = generateToken(user);
+  const currentUser = { ...user, token };
+  setCurrentUser(currentUser);
+
+  return null; // no error
 };

@@ -30,7 +30,7 @@ const Login = () => {
       showAlert("error", err);
     } else {
       showAlert("success", "Logged in successfully!");
-      navigate("/");
+      navigate("/", { replace: true });
     }
   };
 

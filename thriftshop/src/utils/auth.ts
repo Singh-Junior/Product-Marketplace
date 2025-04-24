@@ -1,4 +1,4 @@
-import { jwtDecode } from "jwt-decode";
+// import { jwtDecode } from "jwt-decode";
 import { User } from "../types/user";
 
 export const getUsers = (): User[] => {
@@ -15,7 +15,13 @@ export const setCurrentUser = (user: User) => {
 
 export const getCurrentUser = (): User | null => {
   const user = localStorage.getItem("currentUser");
-  return user ? JSON.parse(user) : null;
+  if (!user) return null;
+
+  const parsedUser: User = JSON.parse(user);
+  if (!parsedUser.cart) parsedUser.cart = [];
+  if (!parsedUser.boughtItems) parsedUser.boughtItems = [];
+
+  return parsedUser;
 };
 
 export const logout = () => {
@@ -32,21 +38,20 @@ export const logout = () => {
 
 export const decodeToken = (token: string) => {
   try {
-    return jwtDecode(token);
+    return JSON.parse(atob(token));
   } catch {
     return null;
   }
 };
 
 export const generateToken = (user: User): string => {
-    const payload = {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-    };
-    return btoa(JSON.stringify(payload));
+  const payload = {
+    id: user.id,
+    username: user.username,
+    email: user.email,
   };
-
+  return btoa(JSON.stringify(payload));
+};
 
 export const signupUser = (newUser: User) => {
   const users = getUsers();
@@ -59,5 +64,3 @@ export const signupUser = (newUser: User) => {
   users.push(newUser);
   saveUsers(users);
 };
-
-  

@@ -1,23 +1,32 @@
-// import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import logo from "./assets/shopping.png";
+import Home from "./pages/Home";
+import Cart from "./components/Cart";
+import Orders from "./components/Orders";
+import ProtectedRoute from "./services/routes/ProtectedRoutes";
+import Layout from "./components/Layout"; // 👈 Shared layout with Header + Sidebar
 import "./App.css";
 
 function App() {
-
   return (
-    <>
-      <div>
-        <img src={logo} alt="icon-logo"  height={60} width={60}/>
-        <h1> Welcome to ThriftShop</h1>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-        </Routes>
-      </div>
-    </>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <Layout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Home />} />
+        <Route path="cart" element={<Cart />} />
+        <Route path="orders" element={<Orders />} />
+      </Route>
+    </Routes>
   );
 }
 
