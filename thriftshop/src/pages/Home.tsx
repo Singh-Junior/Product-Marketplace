@@ -2,15 +2,9 @@ import { useEffect, useState } from "react";
 import "../styles/_cards.scss";
 import { getCurrentUser, setCurrentUser } from "../utils/auth";
 import { useAlert } from "../services/useAlert";
+import ProductModal from "../components/ProductModal";
+import { Product } from "../types/product";
 
-type Product = {
-  id: number;
-  title: string;
-  image: string;
-  price: number;
-  category: string;
-  description: string;
-};
 
 const Home = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -18,6 +12,7 @@ const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [sortOption, setSortOption] = useState<string>("title-asc");
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const { showAlert } = useAlert();
 
@@ -31,13 +26,11 @@ const Home = () => {
       .catch((err) => console.error("Failed to fetch products:", err));
   }, []);
 
-  // Get unique categories for the dropdown
   const categories = [
     "All",
     ...new Set(products.map((product) => product.category)),
   ];
 
-  // Filter products based on search term and category
   useEffect(() => {
     let filtered = products.filter(
       (product) =>
@@ -51,9 +44,8 @@ const Home = () => {
       );
     }
 
-    // Sort the filtered products
     if (sortOption.includes("title")) {
-      filtered.sort((a, b) => (a.title > b.title ? 1 : -1));
+      filtered.sort((a, b) => a.title.localeCompare(b.title));
       if (sortOption === "title-dsc") {
         filtered.reverse();
       }
@@ -76,13 +68,9 @@ const Home = () => {
     } else {
       user.cart.push({
         id: product.id,
-
         title: product.title,
-
         price: product.price,
-
         image: product.image,
-
         quantity: 1,
       });
     }
@@ -93,7 +81,6 @@ const Home = () => {
   return (
     <div className="home-div">
       <div className="filter-container">
-        {/* Search Bar */}
         <input
           type="text"
           placeholder="Search by title or category"
@@ -101,7 +88,6 @@ const Home = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
-        {/* Category Filter Dropdown */}
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
@@ -113,7 +99,6 @@ const Home = () => {
           ))}
         </select>
 
-        {/* Sort Options Dropdown */}
         <select
           value={sortOption}
           onChange={(e) => setSortOption(e.target.value)}
@@ -126,7 +111,11 @@ const Home = () => {
       </div>
       <div className="product-grid">
         {filteredProducts.map((product) => (
-          <div className="product-card" key={product.id}>
+          <div
+            className="product-card"
+            key={product.id}
+            onClick={() => setSelectedProduct(product)}
+          >
             <div className="div-image">
               <img src={product.image} alt={product.title} />
             </div>
@@ -136,12 +125,19 @@ const Home = () => {
                 : product.title}
             </h3>
             <p>${product.price.toFixed(2)}</p>
-            <button onClick={() => handleAddToCart(product)}>
+            <button onClick={(e) => {
+              e.stopPropagation(); // Prevent triggering modal
+              handleAddToCart(product);
+            }}>
               Add to Cart
             </button>
           </div>
         ))}
       </div>
+      <ProductModal
+        product={selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+      />
     </div>
   );
 };
