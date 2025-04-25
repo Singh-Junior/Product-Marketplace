@@ -35,8 +35,18 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ padding: "1rem" }}>
-      <h2>Login</h2>
+    <form onSubmit={handleSubmit}>
+      <div className="login-title">
+        <img
+          src="./shopping.png"
+          height={40}
+          style={{ padding: "20px" }}
+          width={40}
+          alt="Logo"
+        />
+        <h1>ThriftShop</h1>
+      </div>
+      <h3>Login</h3>
       <input
         type="email"
         placeholder="Email"

@@ -22,13 +22,13 @@ const Signup = () => {
 
     const isPasswordStrong = (password: string) => password.length >= 6;
 
-    if (!username.trim()) return showAlert("error","Username is required.");
-    if (!isEmailValid(email)) return showAlert("error","Enter a valid email.");
+    if (!username.trim()) return showAlert("error", "Username is required.");
+    if (!isEmailValid(email)) return showAlert("error", "Enter a valid email.");
     if (!isPasswordStrong(password))
-      return showAlert("error","Password must be at least 6 characters.");
+      return showAlert("error", "Password must be at least 6 characters.");
 
     if (password !== confirmPassword) {
-      showAlert("error","Passwords do not match");
+      showAlert("error", "Passwords do not match");
       return;
     }
 
@@ -37,6 +37,7 @@ const Signup = () => {
       username,
       email,
       password,
+      cart: [],
     };
 
     try {
@@ -45,17 +46,27 @@ const Signup = () => {
       navigate("/login");
     } catch (err) {
       if (err instanceof Error) {
-        showAlert("error",err.message);
+        showAlert("error", err.message);
       } else {
-        showAlert("error","An unknown error occurred");
+        showAlert("error", "An unknown error occurred");
       }
     }
   };
 
   return (
-    <div className="form-wrapper">
-      <h2>Sign Up</h2>
+    <div>
       <form onSubmit={handleSignup}>
+      <div className="login-title">
+        <img
+          src="./shopping.png"
+          height={40}
+          style={{ padding: "20px" }}
+          width={40}
+          alt="Logo"
+        />
+        <h1>ThriftShop</h1>
+      </div>
+        <h3 >Sign Up</h3>
         <input
           type="text"
           placeholder="Username"
@@ -94,5 +105,3 @@ const Signup = () => {
 };
 
 export default Signup;
-
-
